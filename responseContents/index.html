@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>LightHttpServer</title>
+</head>
+<body style="color:#333">
+<H1>LightHttpServerUnit</H1>
+<hr/>
+LightHttpServerUnit is Light, light http server.<br/>
+Basic usage is for Unit test like follow.<br/>
+<div style="border:solid 1px #999;background-color:#DDD">
+HttpServer server = new HttpServer(1080);<br/>
+server.getDefaultHandler()<br/>
+.addResponse(&quot;/&quot;, &quot;&lt;html&gt;&lt;body&gt;テスト&lt;/body&gt;&lt;html&gt;&quot;)<br/>
+.addResponse(&quot;/json&quot;, &quot;{\&quot;request\&quot;:\&quot;success\&quot;}&quot;, &quot;application/json&quot;)<br/>
+.addResponse(&quot;/text&quot;, &quot;value&quot;, &quot;text&quot;, &quot;Shift_JIS&quot;);<br/>
+server.start();
+<br/>
+//some test;<br/>
+server.stop();
+</div>
+<br/>
+or start command line like follow.
+<div style="border:solid 1px #999;background-color:#DDD">
+./bin/lightHttpServer
+</div>
+and put response files into ./responseContents directory<br/>
+<br/>
+this component under Apache License 2.0.<br/>
+author ukiuni.<br/>
+</body>
+</html>
