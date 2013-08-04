@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-import org.ukiuni.lighthttpserver.request.ResponseStaticContentHandler;
+import org.ukiuni.lighthttpserver.response.ResponseStaticContentHandler;
 
 public class ServerMain {
 	public static void main(String[] args) throws IOException {

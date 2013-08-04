@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.ukiuni.lighthttpserver.response.Response;
+import org.ukiuni.lighthttpserver.response.Response404;
 
 public class DefaultHandler extends Handler {
 	private PrintStream errorOut = System.err;

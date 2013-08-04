@@ -85,4 +85,21 @@ public class TestServer {
 		}
 		server.stop();
 	}
+
+	@Test
+	public void testPost() throws Exception {
+		HttpServer server = new HttpServer(1080);
+		server.getDefaultHandler().addResponse("/json", "{\"request\":\"success\"}", "application/json");
+		server.start();
+		{
+			HttpURLConnection connection = (HttpURLConnection) new URL("http://localhost:1080/json").openConnection();
+			connection.setRequestMethod("POST");
+			connection.setDoOutput(true);
+			OutputStream requestOut = connection.getOutputStream();
+			requestOut.write("param=isParam\n".getBytes());
+			Assert.assertEquals("{\"request\":\"success\"}", StreamUtil.streamToString(connection.getInputStream(), "UTF-8"));
+			Assert.assertEquals("application/json", connection.getHeaderField("Content-Type"));
+		}
+		server.stop();
+	}
 }

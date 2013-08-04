@@ -1,9 +1,10 @@
-package org.ukiuni.lighthttpserver.request;
+package org.ukiuni.lighthttpserver.response;
 
 import java.io.File;
 import java.io.OutputStream;
 
-import org.ukiuni.lighthttpserver.response.Response;
+import org.ukiuni.lighthttpserver.request.Handler;
+import org.ukiuni.lighthttpserver.request.Request;
 
 public class ResponseStaticContentHandler extends Handler {
 	private File baseDir;

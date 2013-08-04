@@ -1,4 +1,4 @@
-package org.ukiuni.lighthttpserver.request;
+package org.ukiuni.lighthttpserver.response;
 
 import java.io.OutputStream;
 
