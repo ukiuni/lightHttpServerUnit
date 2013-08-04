@@ -37,9 +37,13 @@ public abstract class Response {
 	}
 
 	public void write(OutputStream out, int responseCode, File file) throws IOException {
+		write(out, responseCode, file, FileUtil.getMimeType(file));
+	}
+
+	public void write(OutputStream out, int responseCode, File file, String contentType) throws IOException {
 		try {
 			FileInputStream in = new FileInputStream(file);
-			writeHeader(out, responseCode, FileUtil.getMimeType(file), file.length());
+			writeHeader(out, responseCode, contentType, file.length());
 			StreamUtil.copy(in, out);
 		} catch (Exception e) {
 			throw new IOException(e);

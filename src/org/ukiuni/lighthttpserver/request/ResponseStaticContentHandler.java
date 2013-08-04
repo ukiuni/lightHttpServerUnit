@@ -18,14 +18,12 @@ public class ResponseStaticContentHandler extends Handler {
 		if (path.endsWith("/")) {
 			path = path + "index.html";
 		}
-		System.out.println("request path:" + path);
 		final File responseFile = new File(baseDir, path.substring(1));
-		System.out.println("file is "+responseFile.getAbsolutePath());
 		if (responseFile.isFile()) {
 			return new Response() {
 				@Override
 				public void onResponse(OutputStream responseOutputStream) throws Throwable {
-					write(responseOutputStream, 200, responseFile);
+					write(responseOutputStream, getResponseCode(responseFile), responseFile);
 				}
 			};
 		}
@@ -34,8 +32,11 @@ public class ResponseStaticContentHandler extends Handler {
 
 	@Override
 	public void onException(Throwable e) {
-		// TODO Auto-generated method stub
 
+	}
+
+	protected int getResponseCode(File responseFile) {
+		return 200;
 	}
 
 }
