@@ -8,7 +8,6 @@ import java.io.InputStream;
 public class ByteReader extends InputStream implements Closeable {
 	private InputStream in;
 	private byte[] lineSeparatorData;
-	private ByteArrayOutputStream bout = new ByteArrayOutputStream();
 	private String charset;
 
 	public ByteReader(InputStream in, String charset, byte[] lineSeparatorData) {
@@ -20,10 +19,6 @@ public class ByteReader extends InputStream implements Closeable {
 	public ByteReader(InputStream in, String charset) {
 		this.in = in;
 		this.charset = charset;
-		String lineSeparator = System.getProperty("line.separator");
-		if (null != lineSeparator) {
-			this.lineSeparatorData = lineSeparator.getBytes();
-		}
 	}
 
 	public String readLine() throws IOException {
@@ -38,7 +33,8 @@ public class ByteReader extends InputStream implements Closeable {
 		byte[] buffer = new byte[searchData.length];
 		int lineDevideMatchIndex = 0;
 		int readed = in.read(buffer);
-		while (readed > 0 && (0 == searchData.length || lineDevideMatchIndex != searchData.length)) {
+		ByteArrayOutputStream bout = new ByteArrayOutputStream();
+		while (readed > 0 && (lineDevideMatchIndex != searchData.length)) {
 			for (int i = 0; i < readed; i++) {
 				if (buffer[i] == searchData[lineDevideMatchIndex]) {
 					lineDevideMatchIndex++;
@@ -55,7 +51,7 @@ public class ByteReader extends InputStream implements Closeable {
 			return null;
 		}
 		byte[] returnValueWithToData = bout.toByteArray();
-		byte[] returnValue = new byte[returnValueWithToData.length - searchData.length];
+		byte[] returnValue = new byte[returnValueWithToData.length - lineDevideMatchIndex];
 		bout.reset();
 		System.arraycopy(returnValueWithToData, 0, returnValue, 0, returnValue.length);
 		return returnValue;
