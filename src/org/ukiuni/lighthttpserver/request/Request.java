@@ -237,10 +237,8 @@ public class Request {
 		}
 		if (-1 != length) {
 			if (null == contentType || "application/x-www-form-urlencoded".equals(contentType.trim())) {
-				char[] valueChars = new char[length];
-				for (int i = 0; i < valueChars.length; i++) {
-					valueChars[i] = (char) this.byteReader.read();
-				}
+				byte[] valueChars = new byte[length];
+				this.byteReader.read(valueChars);
 				String content = new String(valueChars);
 				this.parseParameters(content, charset);
 				this.value = content;
