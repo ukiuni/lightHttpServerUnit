@@ -2,6 +2,9 @@ package org.ukiuni.lighthttpserver.util;
 
 import java.io.ByteArrayOutputStream;
 import java.io.Closeable;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -22,6 +25,17 @@ public class StreamUtil {
 		return new String(inputStreamToByteArray(in), encode);
 	}
 
+	public static void streamToFile(InputStream in, File file) throws IOException {
+		file.getParentFile().mkdirs();
+		FileOutputStream out = null;
+		try {
+			out = new FileOutputStream(file);
+			copy(in, out);
+		} finally {
+			closeQuietry(out);
+		}
+	}
+
 	public static byte[] inputStreamToByteArray(InputStream in) throws IOException {
 		byte[] buffer = new byte[BUFFER_SIZE];
 		int readed = in.read(buffer);
@@ -40,5 +54,13 @@ public class StreamUtil {
 			in.close();
 		} catch (Throwable e) {
 		}
+	}
+
+	public static String fileToString(File file, String encode) throws IOException {
+		FileInputStream in = new FileInputStream(file);
+		ByteArrayOutputStream out = new ByteArrayOutputStream();
+		StreamUtil.copy(in, out);
+
+		return new String(out.toByteArray(), encode);
 	}
 }

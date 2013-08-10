@@ -26,7 +26,7 @@ public abstract class Response {
 		this.additionalHeader = additionalHeader;
 	}
 
-	public void write(OutputStream out, int responseCode, String contentType, String value, String charset) throws IOException {
+	public void write(OutputStream out, int responseCode, String value, String contentType, String charset) throws IOException {
 		try {
 			byte[] responseData = value.getBytes(charset);
 			writeHeader(out, responseCode, contentType, responseData.length);
@@ -42,9 +42,13 @@ public abstract class Response {
 
 	public void write(OutputStream out, int responseCode, File file, String contentType) throws IOException {
 		try {
-			FileInputStream in = new FileInputStream(file);
-			writeHeader(out, responseCode, contentType, file.length());
-			StreamUtil.copy(in, out);
+			if (file.isFile()) {
+				FileInputStream in = new FileInputStream(file);
+				writeHeader(out, responseCode, contentType, file.length());
+				StreamUtil.copy(in, out);
+			} else {
+				write(out, 404, "no such resource", "no such resource", "UTF-8");
+			}
 		} catch (Exception e) {
 			throw new IOException(e);
 		}

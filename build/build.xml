@@ -11,9 +11,12 @@
 	<property name="debuglevel" value="source,lines,vars" />
 	<property name="target" value="1.6" />
 	<property name="source" value="1.6" />
+	<property file="build/build.number" />
+	<property name="version" value="${major.minor}.${next.build.number}" />
+	<property name="jar_path" value="bin/lightHttpServer_${version}_snapshot.jar" />
 	<path id="JUnit 4.libraryclasspath">
 		<pathelement location="testLibs/junit.jar" />
-		<pathelement location="testLibs/org.hamcrest.core_1.3.0.v201303031735.jar"/>
+		<pathelement location="testLibs/org.hamcrest.core_1.3.0.v201303031735.jar" />
 	</path>
 	<path id="LightHttpServer.classpath">
 		<pathelement location="classes" />
@@ -21,14 +24,9 @@
 	</path>
 	<target depends="clean" name="init">
 		<mkdir dir="classes" />
+		<mkdir dir="test/classes" />
 		<copy includeemptydirs="false" todir="classes">
 			<fileset dir="src">
-				<exclude name="**/*.launch" />
-				<exclude name="**/*.java" />
-			</fileset>
-		</copy>
-		<copy includeemptydirs="false" todir="classes">
-			<fileset dir="test">
 				<exclude name="**/*.launch" />
 				<exclude name="**/*.java" />
 			</fileset>
@@ -36,24 +34,29 @@
 	</target>
 	<target name="clean">
 		<delete dir="classes" />
+		<delete dir="test/classes" />
 	</target>
 	<target depends="clean" name="cleanall" />
-	<target depends="build-subprojects,build-project" name="build" />
-	<target name="build-subprojects" />
 	<target depends="init" name="build-project">
 		<echo message="${ant.project.name}: ${ant.file}" />
 		<javac debug="true" debuglevel="${debuglevel}" destdir="classes" includeantruntime="false" source="${source}" target="${target}">
 			<src path="src" />
+			<classpath refid="LightHttpServer.classpath" />
+		</javac>
+		<javac debug="true" debuglevel="${debuglevel}" destdir="test/classes" includeantruntime="false" source="${source}" target="${target}">
 			<src path="test" />
 			<classpath refid="LightHttpServer.classpath" />
 		</javac>
 	</target>
 	<target name="test">
 		<mkdir dir="${junit.output.dir}" />
-		<junit fork="yes" printsummary="withOutAndErr">
+		<junit fork="yes" printsummary="withOutAndErr" dir=".">
 			<formatter type="xml" />
 			<test name="test.org.ukiuni.lighthttpserver.TestServer" todir="${junit.output.dir}" />
-			<classpath refid="LightHttpServer.classpath" />
+			<classpath>
+				<path refid="LightHttpServer.classpath" />
+				<pathelement location="test/classes" />
+			</classpath>
 		</junit>
 	</target>
 	<target name="junitreport">
@@ -64,13 +67,20 @@
 			<report format="frames" todir="${junit.output.dir}" />
 		</junitreport>
 	</target>
-	<target depends="build-project,test" name="create_run_jar">
-		<jar destfile="bin/lightHttpServer.jar" filesetmanifest="mergewithoutmain">
+
+	<target name="increment_build_number">
+		<propertyfile file="build/build.number" comment="Build Number for ANT. Edit not!">
+			<entry key="next.build.number" type="int" operation="+" default="1" />
+		</propertyfile>
+	</target>
+	<target depends="build-project,test,increment_build_number" name="create_run_jar">
+		<jar destfile="${jar_path}" filesetmanifest="mergewithoutmain">
 			<manifest>
 				<attribute name="Main-Class" value="org.ukiuni.lighthttpserver.ServerMain" />
 				<attribute name="Class-Path" value="." />
 			</manifest>
 			<fileset dir="classes" />
+			<fileset dir="src" includes="**/*.java" />
 		</jar>
 	</target>
 </project>

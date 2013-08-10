@@ -110,6 +110,9 @@ public class HttpServer {
 	}
 
 	public DefaultHandler getDefaultHandler() {
+		if (null != this.handler && this.handler instanceof DefaultHandler) {
+			return (DefaultHandler) this.handler;
+		}
 		DefaultHandler handler = new DefaultHandler();
 		this.handler = handler;
 		return handler;

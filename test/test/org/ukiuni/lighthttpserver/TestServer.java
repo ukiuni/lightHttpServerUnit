@@ -1,5 +1,6 @@
 package test.org.ukiuni.lighthttpserver;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
@@ -7,20 +8,36 @@ import java.net.URL;
 import java.util.List;
 import java.util.Map;
 
+import org.junit.After;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.ukiuni.lighthttpserver.HttpServer;
+import org.ukiuni.lighthttpserver.request.DefaultHandler;
 import org.ukiuni.lighthttpserver.request.Handler;
 import org.ukiuni.lighthttpserver.request.Request;
 import org.ukiuni.lighthttpserver.response.Response;
 import org.ukiuni.lighthttpserver.util.StreamUtil;
 
 public class TestServer {
+	HttpServer server;
+
+	@Before
+	public void setupServer() throws IOException {
+		server = new HttpServer(1080);
+		server.start();
+	}
+
+	@After
+	public void stopServer() throws IOException, InterruptedException {
+		if (null != server) {
+			server.stop();
+		}
+	}
+
 	@Test
 	public void testBasic() throws Exception {
-		HttpServer server = new HttpServer(1080);
 		server.getDefaultHandler().addResponse("/", "<html><body>テスト</body><html>").addResponse("/json", "{\"request\":\"success\"}", "application/json").addResponse("/text", "value", "text", "Shift_JIS");
-		server.start();
 		{
 			HttpURLConnection connection = (HttpURLConnection) new URL("http://localhost:1080").openConnection();
 			Assert.assertEquals("<html><body>テスト</body><html>", StreamUtil.streamToString(connection.getInputStream(), "UTF-8"));
@@ -36,12 +53,10 @@ public class TestServer {
 			Assert.assertEquals("value", StreamUtil.streamToString(connection.getInputStream(), "UTF-8"));
 			Assert.assertEquals("text", connection.getHeaderField("Content-Type"));
 		}
-		server.stop();
 	}
 
 	@Test
 	public void testResponse() throws Exception {
-		HttpServer server = new HttpServer(1080);
 		final int responseCode = 200;
 		final String contentType = "application/json";
 		final String responseValue = "{\"result\":\"success\"}";
@@ -54,7 +69,7 @@ public class TestServer {
 					@Override
 					public void onResponse(OutputStream out) {
 						try {
-							write(out, responseCode, contentType, responseValue, responseEncode);
+							write(out, responseCode, responseValue, contentType, responseEncode);
 						} catch (IOException e) {
 							e.printStackTrace();
 						}
@@ -67,7 +82,6 @@ public class TestServer {
 				e.printStackTrace();
 			}
 		});
-		server.start();
 		HttpURLConnection connection = (HttpURLConnection) new URL("http://localhost:1080").openConnection();
 		Assert.assertEquals(responseValue, StreamUtil.streamToString(connection.getInputStream(), responseEncode));
 		Map<String, List<String>> headers = connection.getHeaderFields();
@@ -83,14 +97,11 @@ public class TestServer {
 				Assert.assertEquals("application/json", value);
 			}
 		}
-		server.stop();
 	}
 
 	@Test
 	public void testPost() throws Exception {
-		HttpServer server = new HttpServer(1080);
 		server.getDefaultHandler().addResponse("/json", "{\"request\":\"success\"}", "application/json");
-		server.start();
 		{
 			HttpURLConnection connection = (HttpURLConnection) new URL("http://localhost:1080/json").openConnection();
 			connection.setRequestMethod("POST");
@@ -100,6 +111,59 @@ public class TestServer {
 			Assert.assertEquals("{\"request\":\"success\"}", StreamUtil.streamToString(connection.getInputStream(), "UTF-8"));
 			Assert.assertEquals("application/json", connection.getHeaderField("Content-Type"));
 		}
-		server.stop();
+	}
+
+	@Test
+	public void testDefaultHandler() throws Exception {
+		DefaultHandler handler = server.getDefaultHandler();
+		handler.addResponse("/simple", "simple value");
+		handler.addResponse("/json", "{\"request\":\"success1\"}", "application/json");
+		handler.addResponse("/json201", 201, "{\"request\":\"success2\"}");
+		handler.addResponse("/jsonUTF", 203, "{\"request\":\"success3\"}", "application/json", "UTF-8");
+		handler.addResponse("/file1", new File("test/testfile1.html"));
+		handler.addResponse("/file2", 201, new File("test/testfile2"));
+		handler.addResponse("/file3", 202, new File("test/testfile3"), "application/json");
+		{
+			HttpURLConnection connection = (HttpURLConnection) new URL("http://localhost:1080/simple").openConnection();
+			Assert.assertEquals(200, connection.getResponseCode());
+			Assert.assertEquals("simple value", StreamUtil.streamToString(connection.getInputStream(), "UTF-8"));
+			Assert.assertEquals("text/html; charset=UTF-8", connection.getHeaderField("Content-Type"));
+		}
+		{
+			HttpURLConnection connection = (HttpURLConnection) new URL("http://localhost:1080/json").openConnection();
+			Assert.assertEquals(200, connection.getResponseCode());
+			Assert.assertEquals("{\"request\":\"success1\"}", StreamUtil.streamToString(connection.getInputStream(), "UTF-8"));
+			Assert.assertEquals("application/json", connection.getHeaderField("Content-Type"));
+		}
+		{
+			HttpURLConnection connection = (HttpURLConnection) new URL("http://localhost:1080/json201").openConnection();
+			Assert.assertEquals(201, connection.getResponseCode());
+			Assert.assertEquals("{\"request\":\"success2\"}", StreamUtil.streamToString(connection.getInputStream(), "UTF-8"));
+			Assert.assertEquals("text/html; charset=UTF-8", connection.getHeaderField("Content-Type"));
+		}
+		{
+			HttpURLConnection connection = (HttpURLConnection) new URL("http://localhost:1080/jsonUTF").openConnection();
+			Assert.assertEquals(203, connection.getResponseCode());
+			Assert.assertEquals("{\"request\":\"success3\"}", StreamUtil.streamToString(connection.getInputStream(), "UTF-8"));
+			Assert.assertEquals("application/json", connection.getHeaderField("Content-Type"));
+		}
+		{
+			HttpURLConnection connection = (HttpURLConnection) new URL("http://localhost:1080/file1").openConnection();
+			Assert.assertEquals(200, connection.getResponseCode());
+			Assert.assertEquals("testfile1 is sended.", StreamUtil.streamToString(connection.getInputStream(), "UTF-8"));
+			Assert.assertEquals("text/html", connection.getHeaderField("Content-Type"));
+		}
+		{
+			HttpURLConnection connection = (HttpURLConnection) new URL("http://localhost:1080/file2").openConnection();
+			Assert.assertEquals(201, connection.getResponseCode());
+			Assert.assertEquals("testfile2 is sended.", StreamUtil.streamToString(connection.getInputStream(), "UTF-8"));
+			Assert.assertEquals("application/octet-stream", connection.getHeaderField("Content-Type"));
+		}
+		{
+			HttpURLConnection connection = (HttpURLConnection) new URL("http://localhost:1080/file3").openConnection();
+			Assert.assertEquals(202, connection.getResponseCode());
+			Assert.assertEquals("{\"arg\":\"testfile3\"}", StreamUtil.streamToString(connection.getInputStream(), "UTF-8"));
+			Assert.assertEquals("application/json", connection.getHeaderField("Content-Type"));
+		}
 	}
 }
