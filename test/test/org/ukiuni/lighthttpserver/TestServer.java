@@ -116,14 +116,12 @@ public class TestServer {
 			Assert.assertEquals("application/json", connection.getHeaderField("Content-Type"));
 		}
 	}
-	
+
 	@Test
 	public void testSSLPost() throws Exception {
 		server.stop();
-	//	server = new HttpServer(1080);
 		server.setSsl(true);
 		server.start();
-		//Thread.sleep(1000);
 		server.getDefaultHandler().addResponse("/json", "{\"request\":\"success\"}", "application/json");
 		{
 			HttpsURLConnection connection = (HttpsURLConnection) new URL("https://localhost:1080/json").openConnection();
