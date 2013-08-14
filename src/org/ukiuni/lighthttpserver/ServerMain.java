@@ -11,7 +11,7 @@ public class ServerMain {
 		int port = 10080;
 		int managePort = 10081;
 		boolean modeStop = false;
-		String baseDirPath = null;
+		String baseDirPath = "./responseContents";
 		for (int i = 0; i < args.length; i++) {
 			String arg = args[i];
 			if ("-port".equals(arg)) {
