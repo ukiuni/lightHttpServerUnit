@@ -8,6 +8,8 @@ import java.net.URL;
 import java.util.List;
 import java.util.Map;
 
+import javax.net.ssl.HttpsURLConnection;
+
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -18,6 +20,8 @@ import org.ukiuni.lighthttpserver.request.Handler;
 import org.ukiuni.lighthttpserver.request.Request;
 import org.ukiuni.lighthttpserver.response.Response;
 import org.ukiuni.lighthttpserver.util.StreamUtil;
+
+import test.org.ukiuni.lighthttpserver.util.SSLUtil;
 
 public class TestServer {
 	HttpServer server;
@@ -106,6 +110,26 @@ public class TestServer {
 			HttpURLConnection connection = (HttpURLConnection) new URL("http://localhost:1080/json").openConnection();
 			connection.setRequestMethod("POST");
 			connection.setDoOutput(true);
+			OutputStream requestOut = connection.getOutputStream();
+			requestOut.write("param=isParam\n".getBytes());
+			Assert.assertEquals("{\"request\":\"success\"}", StreamUtil.streamToString(connection.getInputStream(), "UTF-8"));
+			Assert.assertEquals("application/json", connection.getHeaderField("Content-Type"));
+		}
+	}
+	
+	@Test
+	public void testSSLPost() throws Exception {
+		server.stop();
+	//	server = new HttpServer(1080);
+		server.setSsl(true);
+		server.start();
+		//Thread.sleep(1000);
+		server.getDefaultHandler().addResponse("/json", "{\"request\":\"success\"}", "application/json");
+		{
+			HttpsURLConnection connection = (HttpsURLConnection) new URL("https://localhost:1080/json").openConnection();
+			connection.setRequestMethod("POST");
+			connection.setDoOutput(true);
+			SSLUtil.toNoCheckSSLConnection(connection);
 			OutputStream requestOut = connection.getOutputStream();
 			requestOut.write("param=isParam\n".getBytes());
 			Assert.assertEquals("{\"request\":\"success\"}", StreamUtil.streamToString(connection.getInputStream(), "UTF-8"));

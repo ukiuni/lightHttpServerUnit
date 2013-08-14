@@ -1,11 +1,22 @@
 package org.ukiuni.lighthttpserver;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.security.KeyManagementException;
+import java.security.KeyStore;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.UnrecoverableKeyException;
+import java.security.cert.CertificateException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+
+import javax.net.ssl.KeyManagerFactory;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLServerSocketFactory;
 
 import org.ukiuni.lighthttpserver.request.DefaultHandler;
 import org.ukiuni.lighthttpserver.request.Handler;
@@ -13,6 +24,9 @@ import org.ukiuni.lighthttpserver.request.Handler;
 public class HttpServer {
 	private boolean started;
 	private int port;
+	private String keyPath;
+	private int serverWaitQueue;
+	private boolean ssl;
 
 	public int getPort() {
 		return port;
@@ -69,7 +83,17 @@ public class HttpServer {
 			throw new IllegalStateException("server aleady started");
 		}
 		started = true;
-		serverSocket = new ServerSocket(port);
+		if (isSsl()) {
+			try {
+				serverSocket = initSSL(port);
+			} catch (Exception e) {
+				if (null != handler) {
+					handler.onException(e);
+				}
+			}
+		} else {
+			serverSocket = new ServerSocket(port);
+		}
 		if (null == executorService) {
 			executorService = Executors.newSingleThreadExecutor();
 		}
@@ -106,6 +130,7 @@ public class HttpServer {
 		if (null != executorService) {
 			executorService.shutdown();
 			executorService.awaitTermination(Long.MAX_VALUE, TimeUnit.SECONDS);
+			executorService = null;
 		}
 	}
 
@@ -116,5 +141,42 @@ public class HttpServer {
 		DefaultHandler handler = new DefaultHandler();
 		this.handler = handler;
 		return handler;
+	}
+
+	private ServerSocket initSSL(int port) throws KeyStoreException, NoSuchAlgorithmException, CertificateException, FileNotFoundException, IOException, UnrecoverableKeyException, KeyManagementException {
+		KeyStore keyStore = KeyStore.getInstance("JKS");
+		char[] keyStorePassword = "changeit".toCharArray();
+		keyStore.load(getClass().getClassLoader().getResourceAsStream("default_keystore.jks"), keyStorePassword);
+		KeyManagerFactory keyManagerFactory = KeyManagerFactory.getInstance("SunX509");
+		keyManagerFactory.init(keyStore, keyStorePassword);
+		SSLContext sSLContext = SSLContext.getInstance("TLS");
+		sSLContext.init(keyManagerFactory.getKeyManagers(), null, null);
+		SSLServerSocketFactory serverSocketFactory = sSLContext.getServerSocketFactory();
+		ServerSocket serverSocket = serverSocketFactory.createServerSocket(port, serverWaitQueue);
+		return serverSocket;
+	}
+
+	public String getKeyPath() {
+		return keyPath;
+	}
+
+	public void setKeyPath(String keyPath) {
+		this.keyPath = keyPath;
+	}
+
+	public int getServerWaitQueue() {
+		return serverWaitQueue;
+	}
+
+	public void setServerWaitQueue(int serverWaitQueue) {
+		this.serverWaitQueue = serverWaitQueue;
+	}
+
+	public boolean isSsl() {
+		return ssl;
+	}
+
+	public void setSsl(boolean ssl) {
+		this.ssl = ssl;
 	}
 }
