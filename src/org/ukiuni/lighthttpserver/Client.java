@@ -15,6 +15,7 @@ public class Client {
 	private Handler handler;
 	private InputStream requestInputStream;
 	private OutputStream responseOutputStream;
+	private boolean modeAsync = false;
 
 	public Client(Socket socket, Handler handler) {
 		this.socket = socket;
@@ -36,7 +37,7 @@ public class Client {
 				handler.onException(e);
 			}
 		}
-		this.close();
+		this.modeAsync = response.isAsyncMode();
 	}
 
 	private Request parseRequest() throws IOException {
@@ -55,5 +56,9 @@ public class Client {
 		StreamUtil.closeQuietry(requestInputStream);
 		StreamUtil.closeQuietry(responseOutputStream);
 		this.socket.close();
+	}
+
+	public boolean isAsyncMode() {
+		return modeAsync;
 	}
 }

@@ -17,6 +17,7 @@ public abstract class Response {
 	private static final Map<Integer, String> RESPONSE_CODE_MAP = new HashMap<Integer, String>();
 	private static final String SERVER_STRING = "LightHttpServer 0.0.001";
 	private Map<String, String> additionalHeader;
+	private boolean modeAsync = false;
 
 	public Map<String, String> getAdditionalHeader() {
 		return additionalHeader;
@@ -113,6 +114,14 @@ public abstract class Response {
 		RESPONSE_CODE_MAP.put(503, "Service Unavailable");
 		RESPONSE_CODE_MAP.put(504, "Gateway Time-out");
 		RESPONSE_CODE_MAP.put(505, "HTTP Version not supported");
+	}
+
+	public void toAsyncMode() {
+		modeAsync = true;
+	}
+
+	public boolean isAsyncMode() {
+		return modeAsync;
 	}
 
 	public abstract void onResponse(OutputStream responseOutputStream) throws Throwable;
