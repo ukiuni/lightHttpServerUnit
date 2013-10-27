@@ -109,7 +109,7 @@ public class HttpServer {
 						Client client = new Client(socket, handler);
 						client.init();
 						client.handleRequest();
-						if (client.isAsyncMode()) {
+						if (!client.isAsyncMode()) {
 							client.close();
 						}
 					} catch (Exception e) {
