@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite errors="0" failures="0" hostname="takeshiito-no-MacBook-Pro.local" name="test.org.ukiuni.lighthttpserver.TestServer" tests="5" time="0.629" timestamp="2013-10-30T13:51:12">
+<testsuite errors="0" failures="0" hostname="takeshiito-no-MacBook-Pro.local" name="test.org.ukiuni.lighthttpserver.TestServer" tests="5" time="0.579" timestamp="2013-10-30T14:15:09">
   <properties>
     <property name="java.vendor" value="Apple Inc." />
     <property name="env.__CHECKFIX1436934" value="1" />
@@ -25,7 +25,7 @@
     <property name="ant.project.default-target" value="create_run_jar" />
     <property name="ant.project.name" value="LightHttpServer" />
     <property name="java.version" value="1.6.0_65" />
-    <property name="version" value="0.0.7" />
+    <property name="version" value="0.0.8" />
     <property name="user.timezone" value="" />
     <property name="sun.arch.data.model" value="64" />
     <property name="http.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16" />
@@ -40,7 +40,6 @@
     <property name="user.country" value="JP" />
     <property name="java.home" value="/System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Home" />
     <property name="java.vm.info" value="mixed mode" />
-    <property name="env.JAVA_MAIN_CLASS_2122" value="org.eclipse.ant.internal.launching.remote.InternalAntRunner" />
     <property name="env.LOGNAME" value="tito" />
     <property name="ant.file" value="/Users/tito/git/lightHttpServerUnit/build/build.xml" />
     <property name="os.version" value="10.9" />
@@ -57,22 +56,22 @@
     <property name="eclipse.pdebuild.scripts" value="/Applications/eclipse Kepler/plugins/org.eclipse.pde.build_3.8.100.v20130514-1028/scripts//" />
     <property name="ant.file.type.LightHttpServer" value="file" />
     <property name="user.home" value="/Users/tito" />
-    <property name="jar_path" value="bin/lightHttpServer_0.0.7_snapshot.jar" />
+    <property name="jar_path" value="bin/lightHttpServer_0.0.8_snapshot.jar" />
     <property name="target" value="1.6" />
     <property name="java.specification.vendor" value="Sun Microsystems Inc." />
     <property name="java.library.path" value=".:/Library/Java/Extensions:/System/Library/Java/Extensions:/usr/lib/java" />
     <property name="java.vendor.url" value="http://www.apple.com/" />
-    <property name="env.JAVA_STARTED_ON_FIRST_THREAD_2122" value="1" />
     <property name="java.vm.vendor" value="Apple Inc." />
     <property name="gopherProxySet" value="false" />
     <property name="java.runtime.name" value="Java(TM) SE Runtime Environment" />
-    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner test.org.ukiuni.lighthttpserver.TestServer filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=false outputtoformatters=true logfailedtests=true logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/Users/tito/git/lightHttpServerUnit/junit/TEST-test.org.ukiuni.lighthttpserver.TestServer.xml crashfile=/Users/tito/git/lightHttpServerUnit/junitvmwatcher1511779830642905291.properties propsfile=/Users/tito/git/lightHttpServerUnit/junit5634222804883325819.properties" />
+    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner test.org.ukiuni.lighthttpserver.TestServer filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=false outputtoformatters=true logfailedtests=true logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/Users/tito/git/lightHttpServerUnit/junit/TEST-test.org.ukiuni.lighthttpserver.TestServer.xml crashfile=/Users/tito/git/lightHttpServerUnit/junitvmwatcher45878632407393587.properties propsfile=/Users/tito/git/lightHttpServerUnit/junit3343144336571565563.properties" />
     <property name="java.class.path" value="/Users/tito/git/lightHttpServerUnit/classes:/Users/tito/git/lightHttpServerUnit/testLibs/junit.jar:/Users/tito/git/lightHttpServerUnit/testLibs/org.hamcrest.core_1.3.0.v201303031735.jar:/Users/tito/git/lightHttpServerUnit/test/classes:/Applications/eclipse Kepler/plugins/org.apache.ant_1.8.4.v201303080030/lib/ant-launcher.jar:/Applications/eclipse Kepler/plugins/org.apache.ant_1.8.4.v201303080030/lib/ant.jar:/Applications/eclipse Kepler/plugins/org.apache.ant_1.8.4.v201303080030/lib/ant-junit.jar:/Applications/eclipse Kepler/plugins/org.apache.ant_1.8.4.v201303080030/lib/ant-junit4.jar" />
     <property name="ant.version" value="Apache Ant(TM) version 1.8.4 compiled on May 22 2012" />
     <property name="env.com.apple.java.jvmMode" value="client" />
     <property name="java.vm.specification.name" value="Java Virtual Machine Specification" />
     <property name="java.vm.specification.version" value="1.0" />
     <property name="sun.cpu.endian" value="little" />
+    <property name="env.JAVA_MAIN_CLASS_2167" value="org.eclipse.ant.internal.launching.remote.InternalAntRunner" />
     <property name="sun.os.patch.level" value="unknown" />
     <property name="debuglevel" value="source,lines,vars" />
     <property name="env.HOME" value="/Users/tito" />
@@ -91,20 +90,21 @@
     <property name="mrj.version" value="1070.1.6.0_65-462" />
     <property name="line.separator" value="&#xa;" />
     <property name="java.vm.name" value="Java HotSpot(TM) 64-Bit Server VM" />
-    <property name="next.build.number" value="7" />
+    <property name="next.build.number" value="8" />
     <property name="basedir" value="/Users/tito/git/lightHttpServerUnit" />
     <property name="ant.java.version" value="1.6" />
     <property name="ant.core.lib" value="/Applications/eclipse Kepler/plugins/org.apache.ant_1.8.4.v201303080030/lib/ant.jar" />
     <property name="source" value="1.6" />
     <property name="file.encoding" value="SJIS" />
+    <property name="env.JAVA_STARTED_ON_FIRST_THREAD_2167" value="1" />
     <property name="env.APP_ICON_374" value="../Resources/Eclipse.icns" />
     <property name="java.specification.version" value="1.6" />
     <property name="ant.project.invoked-targets" value="create_run_jar" />
   </properties>
-  <testcase classname="test.org.ukiuni.lighthttpserver.TestServer" name="testBasic" time="0.062" />
-  <testcase classname="test.org.ukiuni.lighthttpserver.TestServer" name="testResponse" time="0.0040" />
+  <testcase classname="test.org.ukiuni.lighthttpserver.TestServer" name="testBasic" time="0.037" />
+  <testcase classname="test.org.ukiuni.lighthttpserver.TestServer" name="testResponse" time="0.0030" />
   <testcase classname="test.org.ukiuni.lighthttpserver.TestServer" name="testPost" time="0.0030" />
-  <testcase classname="test.org.ukiuni.lighthttpserver.TestServer" name="testSSLPost" time="0.488" />
+  <testcase classname="test.org.ukiuni.lighthttpserver.TestServer" name="testSSLPost" time="0.477" />
   <testcase classname="test.org.ukiuni.lighthttpserver.TestServer" name="testDefaultHandler" time="0.011" />
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>

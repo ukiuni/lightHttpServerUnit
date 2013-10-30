@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import org.ukiuni.lighthttpserver.request.Request;
 import org.ukiuni.lighthttpserver.util.FileUtil;
 import org.ukiuni.lighthttpserver.util.StreamUtil;
 import org.ukiuni.lighthttpserver.util.TimeUtil;
@@ -18,6 +19,11 @@ public abstract class Response {
 	private static final String SERVER_STRING = "LightHttpServer 0.0.001";
 	private Map<String, String> additionalHeader;
 	private boolean modeAsync = false;
+	private Request request;
+
+	public Request getRequest() {
+		return request;
+	}
 
 	public Map<String, String> getAdditionalHeader() {
 		return additionalHeader;
@@ -125,4 +131,8 @@ public abstract class Response {
 	}
 
 	public abstract void onResponse(OutputStream responseOutputStream) throws Throwable;
+
+	public void setRequest(Request request) {
+		this.request = request;
+	}
 }
