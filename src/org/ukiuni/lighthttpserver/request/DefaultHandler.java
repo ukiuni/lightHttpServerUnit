@@ -100,6 +100,25 @@ public class DefaultHandler extends Handler {
 		return this;
 	}
 
+	public DefaultHandler addResponseAll(File baseDir) {
+		registDir(baseDir.getAbsolutePath(), baseDir);
+		return this;
+	}
+
+	private void registDir(String topPath, File dir) {
+		File[] files = dir.listFiles();
+		for (File child : files) {
+			if (child.isDirectory()) {
+				registDir(topPath, child);
+			} else if (child.isFile()) {
+				addResponse(child.getAbsolutePath().substring(topPath.length()), child);
+				if ("index.html".equals(child.getName())) {
+					addResponse(child.getAbsolutePath().substring(topPath.length(), child.getAbsolutePath().lastIndexOf("/") + 1), child);
+				}
+			}
+		}
+	}
+
 	@Override
 	public Response onRequest(Request request) {
 		if (null != this.requestLog) {
@@ -107,6 +126,8 @@ public class DefaultHandler extends Handler {
 		}
 		ReturnValue returnValue = returnMap.get(request.getPath());
 		if (null != returnValue) {
+			return new ReturnValueSettableResponse(returnValue, request);
+		} else if (request.getPath().endsWith("/") && returnMap.containsKey(request.getPath() + "index.html")) {
 			return new ReturnValueSettableResponse(returnValue, request);
 		}
 		return new Response404();
