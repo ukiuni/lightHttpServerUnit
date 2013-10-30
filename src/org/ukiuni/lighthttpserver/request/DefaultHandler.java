@@ -95,6 +95,11 @@ public class DefaultHandler extends Handler {
 		return this;
 	}
 
+	public DefaultHandler addResponse(String path, Response response) {
+		returnMap.put(path, new ReturnValue(response));
+		return this;
+	}
+
 	@Override
 	public Response onRequest(Request request) {
 		if (null != this.requestLog) {
@@ -115,9 +120,11 @@ public class DefaultHandler extends Handler {
 		}
 
 		@Override
-		public void onResponse(OutputStream out) {
+		public void onResponse(OutputStream out) throws Throwable {
 			try {
-				if (returnValue.file != null) {
+				if(null != returnValue.response){
+					returnValue.response.onResponse(out);
+				}else if (returnValue.file != null) {
 					write(out, returnValue.responseCode, returnValue.file, returnValue.contentType);
 				} else {
 					write(out, returnValue.responseCode, returnValue.value, returnValue.contentType, returnValue.encode);
@@ -141,7 +148,11 @@ public class DefaultHandler extends Handler {
 			this.contentType = contentType;
 			this.file = file;
 		}
+		public ReturnValue(Response response) {
+			this.response = response;
+		}
 
+		public Response response;
 		public int responseCode;
 		public File file;
 		public String contentType;
