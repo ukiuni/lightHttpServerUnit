@@ -107,24 +107,27 @@ public class DefaultHandler extends Handler {
 		}
 		ReturnValue returnValue = returnMap.get(request.getPath());
 		if (null != returnValue) {
-			return new ReturnValueSettableResponse(returnValue);
+			return new ReturnValueSettableResponse(returnValue, request);
 		}
 		return new Response404();
 	}
 
 	private class ReturnValueSettableResponse extends Response {
 		ReturnValue returnValue;
+		Request request;
 
-		public ReturnValueSettableResponse(ReturnValue returnValue) {
+		public ReturnValueSettableResponse(ReturnValue returnValue, Request request) {
 			this.returnValue = returnValue;
+			this.request = request;
 		}
 
 		@Override
 		public void onResponse(OutputStream out) throws Throwable {
 			try {
-				if(null != returnValue.response){
+				if (null != returnValue.response) {
+					returnValue.response.setRequest(request);
 					returnValue.response.onResponse(out);
-				}else if (returnValue.file != null) {
+				} else if (returnValue.file != null) {
 					write(out, returnValue.responseCode, returnValue.file, returnValue.contentType);
 				} else {
 					write(out, returnValue.responseCode, returnValue.value, returnValue.contentType, returnValue.encode);
@@ -148,6 +151,7 @@ public class DefaultHandler extends Handler {
 			this.contentType = contentType;
 			this.file = file;
 		}
+
 		public ReturnValue(Response response) {
 			this.response = response;
 		}

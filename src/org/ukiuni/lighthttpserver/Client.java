@@ -30,6 +30,7 @@ public class Client {
 	public void handleRequest() throws IOException {
 		Request request = parseRequest();
 		Response response = handler.onRequest(request);
+		response.setRequest(request);
 		try {
 			response.onResponse(this.responseOutputStream);
 		} catch (Throwable e) {
