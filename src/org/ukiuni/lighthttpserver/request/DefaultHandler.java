@@ -16,6 +16,7 @@ import org.ukiuni.lighthttpserver.util.FileUtil;
 public class DefaultHandler extends Handler {
 	private PrintStream errorOut = System.err;
 	private List<Request> requestLog;
+	private File staticBaseDir;
 
 	public boolean isLogging() {
 		return null != requestLog;
@@ -100,29 +101,22 @@ public class DefaultHandler extends Handler {
 		return this;
 	}
 
-	public DefaultHandler addResponseAll(File baseDir) {
-		registDir(baseDir.getAbsolutePath(), baseDir);
+	public DefaultHandler addStaticBaseDir(File baseDir) {
+		this.staticBaseDir = baseDir;
 		return this;
-	}
-
-	private void registDir(String topPath, File dir) {
-		File[] files = dir.listFiles();
-		for (File child : files) {
-			if (child.isDirectory()) {
-				registDir(topPath, child);
-			} else if (child.isFile()) {
-				addResponse(child.getAbsolutePath().substring(topPath.length()), child);
-				if ("index.html".equals(child.getName())) {
-					addResponse(child.getAbsolutePath().substring(topPath.length(), child.getAbsolutePath().lastIndexOf("/") + 1), child);
-				}
-			}
-		}
 	}
 
 	@Override
 	public Response onRequest(Request request) {
 		if (null != this.requestLog) {
 			this.requestLog.add(request);
+		}
+		if (null != staticBaseDir) {
+			String filePath = request.getPath().endsWith("/") ? request.getPath() + "index.html" : request.getPath();
+			File responseFile = new File(staticBaseDir, filePath);
+			if (responseFile.isFile()) {
+				return new ReturnValueSettableResponse(new ReturnValue(200, responseFile, FileUtil.getMimeType(responseFile)), request);
+			}
 		}
 		ReturnValue returnValue = returnMap.get(request.getPath());
 		if (null != returnValue) {
@@ -145,11 +139,11 @@ public class DefaultHandler extends Handler {
 		@Override
 		public void onResponse(OutputStream out) throws Throwable {
 			try {
-				if (null != returnValue.response) {
+				if (returnValue.file != null) {
+					write(out, returnValue.responseCode, returnValue.file, returnValue.contentType);
+				} else if (null != returnValue.response) {
 					returnValue.response.setRequest(request);
 					returnValue.response.onResponse(out);
-				} else if (returnValue.file != null) {
-					write(out, returnValue.responseCode, returnValue.file, returnValue.contentType);
 				} else {
 					write(out, returnValue.responseCode, returnValue.value, returnValue.contentType, returnValue.encode);
 				}
