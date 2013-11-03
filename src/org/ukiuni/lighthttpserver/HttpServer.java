@@ -41,10 +41,10 @@ public class HttpServer {
 	}
 
 	public void setExecutorService(ExecutorService executorService) {
-		if (null != executorService) {
-			executorService.shutdown();
+		if (null != this.executorService) {
+			this.executorService.shutdown();
 			try {
-				executorService.awaitTermination(Long.MAX_VALUE, TimeUnit.SECONDS);
+				this.executorService.awaitTermination(Long.MAX_VALUE, TimeUnit.SECONDS);
 			} catch (InterruptedException e) {
 				throw new RuntimeException(e);
 			}
