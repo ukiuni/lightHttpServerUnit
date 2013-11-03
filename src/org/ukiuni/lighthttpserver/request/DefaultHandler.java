@@ -16,6 +16,7 @@ import org.ukiuni.lighthttpserver.util.FileUtil;
 public class DefaultHandler extends Handler {
 	private PrintStream errorOut = System.err;
 	private List<Request> requestLog;
+	private File staticBaseDir;
 
 	public boolean isLogging() {
 		return null != requestLog;
@@ -100,32 +101,49 @@ public class DefaultHandler extends Handler {
 		return this;
 	}
 
+	public DefaultHandler addStaticBaseDir(File baseDir) {
+		this.staticBaseDir = baseDir;
+		return this;
+	}
+
 	@Override
 	public Response onRequest(Request request) {
 		if (null != this.requestLog) {
 			this.requestLog.add(request);
 		}
+		if (null != staticBaseDir) {
+			String filePath = request.getPath().endsWith("/") ? request.getPath() + "index.html" : request.getPath();
+			File responseFile = new File(staticBaseDir, filePath);
+			if (responseFile.isFile()) {
+				return new ReturnValueSettableResponse(new ReturnValue(200, responseFile, FileUtil.getMimeType(responseFile)), request);
+			}
+		}
 		ReturnValue returnValue = returnMap.get(request.getPath());
 		if (null != returnValue) {
-			return new ReturnValueSettableResponse(returnValue);
+			return new ReturnValueSettableResponse(returnValue, request);
+		} else if (request.getPath().endsWith("/") && returnMap.containsKey(request.getPath() + "index.html")) {
+			return new ReturnValueSettableResponse(returnValue, request);
 		}
 		return new Response404();
 	}
 
 	private class ReturnValueSettableResponse extends Response {
 		ReturnValue returnValue;
+		Request request;
 
-		public ReturnValueSettableResponse(ReturnValue returnValue) {
+		public ReturnValueSettableResponse(ReturnValue returnValue, Request request) {
 			this.returnValue = returnValue;
+			this.request = request;
 		}
 
 		@Override
 		public void onResponse(OutputStream out) throws Throwable {
 			try {
-				if(null != returnValue.response){
-					returnValue.response.onResponse(out);
-				}else if (returnValue.file != null) {
+				if (returnValue.file != null) {
 					write(out, returnValue.responseCode, returnValue.file, returnValue.contentType);
+				} else if (null != returnValue.response) {
+					returnValue.response.setRequest(request);
+					returnValue.response.onResponse(out);
 				} else {
 					write(out, returnValue.responseCode, returnValue.value, returnValue.contentType, returnValue.encode);
 				}
@@ -148,6 +166,7 @@ public class DefaultHandler extends Handler {
 			this.contentType = contentType;
 			this.file = file;
 		}
+
 		public ReturnValue(Response response) {
 			this.response = response;
 		}

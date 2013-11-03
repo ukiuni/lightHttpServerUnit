@@ -27,6 +27,7 @@ public class HttpServer {
 	private String keyPath;
 	private int serverWaitQueue;
 	private boolean ssl;
+	private Thread portListenThread;
 
 	public int getPort() {
 		return port;
@@ -41,10 +42,10 @@ public class HttpServer {
 	}
 
 	public void setExecutorService(ExecutorService executorService) {
-		if (null != executorService) {
-			executorService.shutdown();
+		if (null != this.executorService) {
+			this.executorService.shutdown();
 			try {
-				executorService.awaitTermination(Long.MAX_VALUE, TimeUnit.SECONDS);
+				this.executorService.awaitTermination(Long.MAX_VALUE, TimeUnit.SECONDS);
 			} catch (InterruptedException e) {
 				throw new RuntimeException(e);
 			}
@@ -100,27 +101,37 @@ public class HttpServer {
 		if (null == handler) {
 			handler = new DefaultHandler();
 		}
-		Runnable runnable = new Runnable() {
-			@Override
+		portListenThread = new Thread() {
 			public void run() {
 				while (started) {
 					try {
-						Socket socket = serverSocket.accept();
-						Client client = new Client(socket, handler);
-						client.init();
-						client.handleRequest();
-						if (!client.isAsyncMode()) {
-							client.close();
-						}
-					} catch (Exception e) {
-						if (started && null != handler) {
-							handler.onException(e);
-						}
+						final Socket socket = serverSocket.accept();
+						Runnable runnable = new Runnable() {
+							@Override
+							public void run() {
+								try {
+									Client client = new Client(socket, handler);
+									client.init();
+									client.handleRequest();
+									if (!client.isAsyncMode()) {
+										client.close();
+									}
+								} catch (Exception e) {
+									if (started && null != handler) {
+										handler.onException(e);
+									}
+								}
+							}
+						};
+						executorService.execute(runnable);
+					} catch (IOException e) {
+						handler.onException(e);
 					}
 				}
 			}
 		};
-		executorService.execute(runnable);
+		portListenThread.start();
+
 		return this;
 	}
 
@@ -128,6 +139,9 @@ public class HttpServer {
 		started = false;
 		if (null != serverSocket) {
 			serverSocket.close();
+		}
+		if (null != portListenThread) {
+			portListenThread.interrupt();
 		}
 		if (null != executorService) {
 			executorService.shutdown();
