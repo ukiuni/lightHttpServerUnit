@@ -1,9 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<<<<<<< HEAD
-<testsuite errors="0" failures="0" hostname="takeshiito-no-MacBook-Pro.local" name="test.org.ukiuni.lighthttpserver.TestServer" tests="5" time="0.579" timestamp="2013-10-30T14:15:09">
-=======
-<testsuite errors="5" failures="0" hostname="takeshiito-no-MacBook-Pro.local" name="test.org.ukiuni.lighthttpserver.TestServer" tests="5" time="0.069" timestamp="2013-11-03T15:04:07">
->>>>>>> refs/heads/multithreaded
+<testsuite errors="5" failures="0" hostname="takeshiito-no-MacBook-Pro.local" name="test.org.ukiuni.lighthttpserver.TestServer" tests="5" time="0.066" timestamp="2013-11-06T14:35:06">
   <properties>
     <property name="java.vendor" value="Apple Inc." />
     <property name="env.__CHECKFIX1436934" value="1" />
@@ -26,15 +22,10 @@
     <property name="user.language" value="ja" />
     <property name="ant.file.LightHttpServer" value="/Users/tito/git/lightHttpServerUnit/build/build.xml" />
     <property name="sun.boot.library.path" value="/System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Libraries" />
-    <property name="env.JAVA_STARTED_ON_FIRST_THREAD_6641" value="1" />
     <property name="ant.project.default-target" value="create_run_jar" />
     <property name="ant.project.name" value="LightHttpServer" />
     <property name="java.version" value="1.6.0_65" />
-<<<<<<< HEAD
-    <property name="version" value="0.0.8" />
-=======
-    <property name="version" value="0.0.14" />
->>>>>>> refs/heads/multithreaded
+    <property name="version" value="0.0.15" />
     <property name="user.timezone" value="" />
     <property name="sun.arch.data.model" value="64" />
     <property name="http.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16" />
@@ -54,7 +45,6 @@
     <property name="os.version" value="10.9" />
     <property name="path.separator" value=":" />
     <property name="java.vm.version" value="20.65-b04-462" />
-    <property name="env.JAVA_MAIN_CLASS_7320" value="org.eclipse.ant.internal.launching.remote.InternalAntRunner" />
     <property name="ant.library.dir" value="/Applications/eclipse Kepler/plugins/org.apache.ant_1.8.4.v201303080030/lib" />
     <property name="junit.output.dir" value="junit" />
     <property name="java.awt.printerjob" value="apple.awt.CPrinterJob" />
@@ -62,15 +52,11 @@
     <property name="awt.toolkit" value="apple.awt.CToolkit" />
     <property name="socksNonProxyHosts" value="local|*.local|169.254/16|*.169.254/16" />
     <property name="ftp.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16" />
-    <property name="env.APP_ICON_6641" value="../Resources/Eclipse.icns" />
+    <property name="env.JAVA_STARTED_ON_FIRST_THREAD_9827" value="1" />
     <property name="eclipse.pdebuild.scripts" value="/Applications/eclipse Kepler/plugins/org.eclipse.pde.build_3.8.100.v20130514-1028/scripts//" />
     <property name="ant.file.type.LightHttpServer" value="file" />
     <property name="user.home" value="/Users/tito" />
-<<<<<<< HEAD
-    <property name="jar_path" value="bin/lightHttpServer_0.0.8_snapshot.jar" />
-=======
-    <property name="jar_path" value="bin/lightHttpServer_0.0.14_snapshot.jar" />
->>>>>>> refs/heads/multithreaded
+    <property name="jar_path" value="bin/lightHttpServer_0.0.15_snapshot.jar" />
     <property name="target" value="1.6" />
     <property name="java.specification.vendor" value="Sun Microsystems Inc." />
     <property name="java.library.path" value=".:/Library/Java/Extensions:/System/Library/Java/Extensions:/usr/lib/java" />
@@ -78,19 +64,13 @@
     <property name="java.vm.vendor" value="Apple Inc." />
     <property name="gopherProxySet" value="false" />
     <property name="java.runtime.name" value="Java(TM) SE Runtime Environment" />
-<<<<<<< HEAD
-    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner test.org.ukiuni.lighthttpserver.TestServer filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=false outputtoformatters=true logfailedtests=true logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/Users/tito/git/lightHttpServerUnit/junit/TEST-test.org.ukiuni.lighthttpserver.TestServer.xml crashfile=/Users/tito/git/lightHttpServerUnit/junitvmwatcher45878632407393587.properties propsfile=/Users/tito/git/lightHttpServerUnit/junit3343144336571565563.properties" />
-=======
-    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner test.org.ukiuni.lighthttpserver.TestServer filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=false outputtoformatters=true logfailedtests=true logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/Users/tito/git/lightHttpServerUnit/junit/TEST-test.org.ukiuni.lighthttpserver.TestServer.xml crashfile=/Users/tito/git/lightHttpServerUnit/junitvmwatcher3871770052065227209.properties propsfile=/Users/tito/git/lightHttpServerUnit/junit9116534936618636028.properties" />
->>>>>>> refs/heads/multithreaded
+    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner test.org.ukiuni.lighthttpserver.TestServer filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=false outputtoformatters=true logfailedtests=true logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/Users/tito/git/lightHttpServerUnit/junit/TEST-test.org.ukiuni.lighthttpserver.TestServer.xml crashfile=/Users/tito/git/lightHttpServerUnit/junitvmwatcher246252995536832850.properties propsfile=/Users/tito/git/lightHttpServerUnit/junit3368422711416369756.properties" />
     <property name="java.class.path" value="/Users/tito/git/lightHttpServerUnit/classes:/Users/tito/git/lightHttpServerUnit/testLibs/junit.jar:/Users/tito/git/lightHttpServerUnit/testLibs/org.hamcrest.core_1.3.0.v201303031735.jar:/Users/tito/git/lightHttpServerUnit/test/classes:/Applications/eclipse Kepler/plugins/org.apache.ant_1.8.4.v201303080030/lib/ant-launcher.jar:/Applications/eclipse Kepler/plugins/org.apache.ant_1.8.4.v201303080030/lib/ant.jar:/Applications/eclipse Kepler/plugins/org.apache.ant_1.8.4.v201303080030/lib/ant-junit.jar:/Applications/eclipse Kepler/plugins/org.apache.ant_1.8.4.v201303080030/lib/ant-junit4.jar" />
     <property name="ant.version" value="Apache Ant(TM) version 1.8.4 compiled on May 22 2012" />
     <property name="env.com.apple.java.jvmMode" value="client" />
-    <property name="env.JAVA_STARTED_ON_FIRST_THREAD_7320" value="1" />
     <property name="java.vm.specification.name" value="Java Virtual Machine Specification" />
     <property name="java.vm.specification.version" value="1.0" />
     <property name="sun.cpu.endian" value="little" />
-    <property name="env.JAVA_MAIN_CLASS_2167" value="org.eclipse.ant.internal.launching.remote.InternalAntRunner" />
     <property name="sun.os.patch.level" value="unknown" />
     <property name="debuglevel" value="source,lines,vars" />
     <property name="env.HOME" value="/Users/tito" />
@@ -102,6 +82,7 @@
     <property name="mrj.build" value="11M4609" />
     <property name="java.awt.graphicsenv" value="apple.awt.CGraphicsEnvironment" />
     <property name="os.arch" value="x86_64" />
+    <property name="env.JAVA_STARTED_ON_FIRST_THREAD_10051" value="1" />
     <property name="java.ext.dirs" value="/Library/Java/Extensions:/System/Library/Java/Extensions:/System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Home/lib/ext" />
     <property name="user.dir" value="/Users/tito/git/lightHttpServerUnit" />
     <property name="env.com.apple.java.jvmTask" value="CommandLine_Manual.java" />
@@ -109,32 +90,18 @@
     <property name="mrj.version" value="1070.1.6.0_65-462" />
     <property name="line.separator" value="&#xa;" />
     <property name="java.vm.name" value="Java HotSpot(TM) 64-Bit Server VM" />
-<<<<<<< HEAD
-    <property name="next.build.number" value="8" />
-=======
-    <property name="next.build.number" value="14" />
->>>>>>> refs/heads/multithreaded
+    <property name="next.build.number" value="15" />
+    <property name="env.APP_ICON_9827" value="../Resources/Eclipse.icns" />
     <property name="basedir" value="/Users/tito/git/lightHttpServerUnit" />
     <property name="ant.java.version" value="1.6" />
     <property name="ant.core.lib" value="/Applications/eclipse Kepler/plugins/org.apache.ant_1.8.4.v201303080030/lib/ant.jar" />
     <property name="source" value="1.6" />
     <property name="file.encoding" value="SJIS" />
-<<<<<<< HEAD
-    <property name="env.JAVA_STARTED_ON_FIRST_THREAD_2167" value="1" />
-    <property name="env.APP_ICON_374" value="../Resources/Eclipse.icns" />
-=======
->>>>>>> refs/heads/multithreaded
     <property name="java.specification.version" value="1.6" />
     <property name="ant.project.invoked-targets" value="create_run_jar" />
+    <property name="env.JAVA_MAIN_CLASS_10051" value="org.eclipse.ant.internal.launching.remote.InternalAntRunner" />
   </properties>
-<<<<<<< HEAD
-  <testcase classname="test.org.ukiuni.lighthttpserver.TestServer" name="testBasic" time="0.037" />
-  <testcase classname="test.org.ukiuni.lighthttpserver.TestServer" name="testResponse" time="0.0030" />
-  <testcase classname="test.org.ukiuni.lighthttpserver.TestServer" name="testPost" time="0.0030" />
-  <testcase classname="test.org.ukiuni.lighthttpserver.TestServer" name="testSSLPost" time="0.477" />
-  <testcase classname="test.org.ukiuni.lighthttpserver.TestServer" name="testDefaultHandler" time="0.011" />
-=======
-  <testcase classname="test.org.ukiuni.lighthttpserver.TestServer" name="testBasic" time="0.011">
+  <testcase classname="test.org.ukiuni.lighthttpserver.TestServer" name="testBasic" time="0.0090">
     <error message="Address already in use" type="java.net.BindException">java.net.BindException: Address already in use
 	at java.net.PlainSocketImpl.socketBind(Native Method)
 	at java.net.PlainSocketImpl.socketBind(PlainSocketImpl.java:521)
@@ -182,7 +149,7 @@
 	at test.org.ukiuni.lighthttpserver.TestServer.setupServer(TestServer.java:32)
 </error>
   </testcase>
-  <testcase classname="test.org.ukiuni.lighthttpserver.TestServer" name="testDefaultHandler" time="0.0020">
+  <testcase classname="test.org.ukiuni.lighthttpserver.TestServer" name="testDefaultHandler" time="0.0010">
     <error message="Address already in use" type="java.net.BindException">java.net.BindException: Address already in use
 	at java.net.PlainSocketImpl.socketBind(Native Method)
 	at java.net.PlainSocketImpl.socketBind(PlainSocketImpl.java:521)
@@ -194,7 +161,6 @@
 	at test.org.ukiuni.lighthttpserver.TestServer.setupServer(TestServer.java:32)
 </error>
   </testcase>
->>>>>>> refs/heads/multithreaded
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>

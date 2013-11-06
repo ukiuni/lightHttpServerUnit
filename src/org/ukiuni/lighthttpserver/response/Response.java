@@ -61,7 +61,7 @@ public abstract class Response {
 		}
 	}
 
-	private void writeHeader(OutputStream out, int responseCode, String contentType, long contentLength) throws IOException, UnsupportedEncodingException {
+	protected void writeHeader(OutputStream out, int responseCode, String contentType, long contentLength) throws IOException, UnsupportedEncodingException {
 		out.write(("HTTP/1.1 " + responseCode + " " + RESPONSE_CODE_MAP.get(responseCode) + "\r\n").getBytes("UTF-8"));
 		out.write(("Date: " + headerReplace(TimeUtil.getUTC()) + "\r\n").getBytes("UTF-8"));
 		out.write(("Server: " + headerReplace(SERVER_STRING) + "\r\n").getBytes("UTF-8"));
