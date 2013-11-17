@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.io.UnsupportedEncodingException;
+import java.net.InetAddress;
 import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -40,6 +41,7 @@ public class Request {
 	private String value;
 	private ByteReader byteReader;
 	private String charset;
+	private InetAddress remoteAddress;
 
 	public void dumpHeader(PrintStream out) {
 		Set<String> keySet = headers.keySet();
@@ -163,10 +165,11 @@ public class Request {
 		return returnList;
 	}
 
-	public static Request parseInput(InputStream inputStream, String charset) throws IOException {
+	public static Request parseInput(InputStream inputStream, String charset, InetAddress inetAddress) throws IOException {
 		Request request = new Request();
 		request.byteReader = new ByteReader(inputStream, charset, "\r\n".getBytes());
 		request.charset = charset;
+		request.remoteAddress = inetAddress;
 		return request.parseInput();
 	}
 
@@ -363,6 +366,10 @@ public class Request {
 			return null;
 		}
 		return path.substring(lastSlash + 1);
+	}
+
+	public InetAddress getRemoteAddress() {
+		return remoteAddress;
 	}
 
 	private static class ParamHeader {

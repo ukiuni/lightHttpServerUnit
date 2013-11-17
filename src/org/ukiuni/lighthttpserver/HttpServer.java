@@ -31,7 +31,7 @@ public class HttpServer {
 	private char[] certificatePassword = "changeit".toCharArray();
 	private char[] keyStorePassword = "changeit".toCharArray();
 	private String keyStorePath = "default_keystore.jks";
-	private String instanceType = "JKS";
+	private String keyStoreType = "JKS";
 
 	public int getPort() {
 		return port;
@@ -171,12 +171,12 @@ public class HttpServer {
 		this.keyStorePath = keyStorePath;
 	}
 
-	public void setInstanceType(String instanceType) {
-		this.instanceType = instanceType;
+	public void setKeyStoreType(String keyStoreType) {
+		this.keyStoreType = keyStoreType;
 	}
 
 	private ServerSocket initSSL(int port) throws KeyStoreException, NoSuchAlgorithmException, CertificateException, FileNotFoundException, IOException, UnrecoverableKeyException, KeyManagementException {
-		KeyStore keyStore = KeyStore.getInstance(instanceType);
+		KeyStore keyStore = KeyStore.getInstance(keyStoreType);
 		keyStore.load(getClass().getClassLoader().getResourceAsStream(keyStorePath), keyStorePassword);
 		KeyManagerFactory keyManagerFactory = KeyManagerFactory.getInstance("SunX509");
 		keyManagerFactory.init(keyStore, certificatePassword);

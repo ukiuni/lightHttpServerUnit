@@ -3,6 +3,8 @@ package org.ukiuni.lighthttpserver;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
 import java.net.Socket;
 
 import org.ukiuni.lighthttpserver.request.Handler;
@@ -16,6 +18,7 @@ public class Client {
 	private InputStream requestInputStream;
 	private OutputStream responseOutputStream;
 	private boolean modeAsync = false;
+	private InetAddress remoteAddress;
 
 	public Client(Socket socket, Handler handler) {
 		this.socket = socket;
@@ -25,6 +28,11 @@ public class Client {
 	public void init() throws IOException {
 		this.requestInputStream = this.socket.getInputStream();
 		this.responseOutputStream = this.socket.getOutputStream();
+		try {
+			this.remoteAddress = ((InetSocketAddress) this.socket.getRemoteSocketAddress()).getAddress();
+		} catch (Exception e) {
+			// Do Nothing
+		}
 	}
 
 	public void handleRequest() throws IOException {
@@ -42,7 +50,7 @@ public class Client {
 	}
 
 	private Request parseRequest() throws IOException {
-		return Request.parseInput(requestInputStream, handler.getRequestPaseEncode());
+		return Request.parseInput(requestInputStream, handler.getRequestPaseEncode(), this.remoteAddress);
 	}
 
 	public InputStream getRequestInputStream() {
@@ -61,5 +69,9 @@ public class Client {
 
 	public boolean isAsyncMode() {
 		return modeAsync;
+	}
+
+	public InetAddress getRemoteAddress() {
+		return remoteAddress;
 	}
 }
