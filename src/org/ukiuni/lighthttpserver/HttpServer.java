@@ -171,21 +171,12 @@ public class HttpServer {
 		this.keyStorePath = keyStorePath;
 	}
 
-<<<<<<< HEAD
 	public void setKeyStoreType(String keyStoreType) {
 		this.keyStoreType = keyStoreType;
-=======
-	public void setInstanceType(String instanceType) {
-		this.instanceType = instanceType;
->>>>>>> branch 'master' of https://github.com/ukiuni/lightHttpServerUnit.git
 	}
 
 	private ServerSocket initSSL(int port) throws KeyStoreException, NoSuchAlgorithmException, CertificateException, FileNotFoundException, IOException, UnrecoverableKeyException, KeyManagementException {
-<<<<<<< HEAD
 		KeyStore keyStore = KeyStore.getInstance(keyStoreType);
-=======
-		KeyStore keyStore = KeyStore.getInstance(instanceType);
->>>>>>> branch 'master' of https://github.com/ukiuni/lightHttpServerUnit.git
 		keyStore.load(getClass().getClassLoader().getResourceAsStream(keyStorePath), keyStorePassword);
 		KeyManagerFactory keyManagerFactory = KeyManagerFactory.getInstance("SunX509");
 		keyManagerFactory.init(keyStore, certificatePassword);
@@ -194,13 +185,10 @@ public class HttpServer {
 		SSLServerSocketFactory serverSocketFactory = sSLContext.getServerSocketFactory();
 		ServerSocket serverSocket = serverSocketFactory.createServerSocket(port, serverWaitQueue);
 		return serverSocket;
-<<<<<<< HEAD
 	}
 
 	public void setCertificatePassword(char[] certificatePassword) {
 		this.certificatePassword = certificatePassword;
-=======
->>>>>>> branch 'master' of https://github.com/ukiuni/lightHttpServerUnit.git
 	}
 
 	public int getServerWaitQueue() {
