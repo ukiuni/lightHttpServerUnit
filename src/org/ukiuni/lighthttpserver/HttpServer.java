@@ -24,10 +24,14 @@ import org.ukiuni.lighthttpserver.request.Handler;
 public class HttpServer {
 	private boolean started;
 	private int port;
-	private String keyPath;
 	private int serverWaitQueue;
 	private boolean ssl;
 	private Thread portListenThread;
+
+	private char[] certificatePassword = "changeit".toCharArray();
+	private char[] keyStorePassword = "changeit".toCharArray();
+	private String keyStorePath = "default_keystore.jks";
+	private String instanceType = "JKS";
 
 	public int getPort() {
 		return port;
@@ -159,12 +163,23 @@ public class HttpServer {
 		return handler;
 	}
 
+	public void setKeyStorePassword(char[] keyStorePassword) {
+		this.keyStorePassword = keyStorePassword;
+	}
+
+	public void setKeyStorePath(String keyStorePath) {
+		this.keyStorePath = keyStorePath;
+	}
+
+	public void setInstanceType(String instanceType) {
+		this.instanceType = instanceType;
+	}
+
 	private ServerSocket initSSL(int port) throws KeyStoreException, NoSuchAlgorithmException, CertificateException, FileNotFoundException, IOException, UnrecoverableKeyException, KeyManagementException {
-		KeyStore keyStore = KeyStore.getInstance("JKS");
-		char[] keyStorePassword = "changeit".toCharArray();
-		keyStore.load(getClass().getClassLoader().getResourceAsStream("default_keystore.jks"), keyStorePassword);
+		KeyStore keyStore = KeyStore.getInstance(instanceType);
+		keyStore.load(getClass().getClassLoader().getResourceAsStream(keyStorePath), keyStorePassword);
 		KeyManagerFactory keyManagerFactory = KeyManagerFactory.getInstance("SunX509");
-		keyManagerFactory.init(keyStore, keyStorePassword);
+		keyManagerFactory.init(keyStore, certificatePassword);
 		SSLContext sSLContext = SSLContext.getInstance("TLS");
 		sSLContext.init(keyManagerFactory.getKeyManagers(), null, null);
 		SSLServerSocketFactory serverSocketFactory = sSLContext.getServerSocketFactory();
@@ -172,12 +187,8 @@ public class HttpServer {
 		return serverSocket;
 	}
 
-	public String getKeyPath() {
-		return keyPath;
-	}
-
-	public void setKeyPath(String keyPath) {
-		this.keyPath = keyPath;
+	public void setCertificatePassword(char[] certificatePassword) {
+		this.certificatePassword = certificatePassword;
 	}
 
 	public int getServerWaitQueue() {
